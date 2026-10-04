@@ -1,3 +1,18 @@
 .idea
 __pycache__
 .ipynb_checkpoints
+# Local honours experiment outputs
+/results*/
+/pilot-results/
+/pilot4-results/
+.eval-port-*.lock
+.DS_Store
+.vscode/
+__pycache__/
+*.pyc
+*.log
+*.backup
+*.bak
+*.before-*
+*.original.py
+/fast-downward/builds/

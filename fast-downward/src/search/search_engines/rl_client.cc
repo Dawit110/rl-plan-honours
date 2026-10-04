@@ -1,5 +1,6 @@
 #include "rl_client.h"
 #include <iostream>
+#include <cstdio>
 
 namespace rl_client {
 
@@ -15,7 +16,12 @@ bool RLClient::init_connection() {
         return false;
     }
 
-    memset(&serv_addr, '0', sizeof(serv_addr));
+    memset(&serv_addr, 0, sizeof(serv_addr));
+
+    #ifdef __APPLE__
+        serv_addr.sin_len = sizeof(serv_addr);
+    #endif
+
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
 
@@ -30,7 +36,7 @@ bool RLClient::init_connection() {
 
     if (sockfd < 0)
     {
-        printf("\nConnection Failed \n");
+        perror("RL connection failed");
         return false;
     }
     return true;
@@ -70,14 +76,43 @@ void RLClient::send_msg(const std::map<int, std::map<std::string, double>>& open
 }
 
 std::string RLClient::read_msg() const {
-    char buffer[1024] = {0};
-    int valread = read( sock, buffer, 1024);
-    std::string msg(buffer);
-    // std::cout << "Received: " << msg << std::endl;
-    if (msg.find("END") != std::string::npos) {
-        std::cout << "Termination due to RL agent" << std::endl;
-        exit(0);
+    char buffer[1024];
+
+    ssize_t valread = read(sock, buffer, sizeof(buffer));
+
+    if (valread < 0) {
+        perror("RL socket read failed");
+        std::exit(70);
     }
+
+    if (valread == 0) {
+        std::cerr
+            << "RL socket closed while waiting for an action."
+            << std::endl;
+        std::exit(70);
+    }
+
+    std::string msg(buffer, static_cast<size_t>(valread));
+
+    if (msg.find("END") != std::string::npos) {
+        std::cout << "Termination due to RL agent"
+                  << std::endl;
+        std::exit(0);
+    }
+
+    if (msg.size() < 5) {
+        std::cerr
+            << "Invalid RL action message: expected at least "
+            << "5 bytes, received "
+            << msg.size()
+            << " bytes. Message: ["
+            << msg
+            << "]"
+            << std::endl;
+
+        std::exit(70);
+    }
+
     return msg;
 }
 

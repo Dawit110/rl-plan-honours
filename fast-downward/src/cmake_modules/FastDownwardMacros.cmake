@@ -4,7 +4,9 @@ macro(fast_downward_set_compiler_flags)
     # Note: on CMake >= 3.0 the compiler ID of Apple-provided clang is AppleClang.
     # If we change the required CMake version from 2.8.3 to 3.0 or greater,
     # we have to fix this.
-    if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    if(CMAKE_COMPILER_IS_GNUCXX
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         include(CheckCXXCompilerFlag)
         check_cxx_compiler_flag( "-std=c++11" CXX11_FOUND )
         if(CXX11_FOUND)
@@ -73,7 +75,9 @@ endmacro()
 
 macro(fast_downward_add_profile_build)
     # We don't offer a dedicated PROFILE build on Windows.
-    if(CMAKE_COMPILER_IS_GNUCXX OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    if(CMAKE_COMPILER_IS_GNUCXX
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+        OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         if(NOT CMAKE_CONFIGURATION_TYPES)
             set_property(CACHE CMAKE_BUILD_TYPE PROPERTY HELPSTRING "Choose the type of build")
             set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release;Profile")

@@ -101,6 +101,15 @@ def main():
                                                                     'NORMDIFF = 5, '
                                                                     'NORMABSDIFF = 6,',
                         default=1, type=int)
+    parser.add_argument(
+        '--temporal-window',
+        type=int,
+        default=0,
+        help='Number of preceding observations used '
+             'for temporal minimum-value features. '
+             'Zero preserves the original observation.'
+    )
+
     args = parser.parse_args()
     import logging
     logging.basicConfig(level=logging.INFO if not args.verbose else logging.DEBUG)
@@ -149,7 +158,8 @@ def main():
         env = FDEnvSelHeur(host=HOST, port=PORT, num_heuristics=args.num_heuristics, config_dir=args.outdir,
                            time_step_limit=args.time_step_limit, port_file_id=args.pfid,
                            use_general_state_info=args.use_gsi, state_type=args.state,
-                           max_rand_steps=0 if test else args.max_rand_step)
+                           max_rand_steps=0 if test else args.max_rand_step,
+                           temporal_window=args.temporal_window)
         # Use different random seeds for train and test envs
         env_seed = 2 ** 32 - 1 - args.seed if test else args.seed
         env.seed(env_seed)

@@ -2,6 +2,7 @@ import socket
 import time
 import typing
 from copy import deepcopy
+from collections import deque
 from enum import Enum
 from os import remove
 from os.path import join as joinpath
@@ -29,7 +30,7 @@ class FDEnvSelHeur(Env):
                  num_steps=None, state_type: Union[int, StateType] = StateType.RAW,
                  seed: int = 12345, max_rand_steps: int = 0, config_dir: str = '.',
                  port_file_id=None, use_general_state_info: bool = True,
-                 time_step_limit: int = -1):
+                 time_step_limit: int = -1, temporal_window: int = 0):
         """
         Initialize environment
         """
@@ -49,6 +50,12 @@ class FDEnvSelHeur(Env):
         self._use_gsi = use_general_state_info
         if use_general_state_info:
             total_state_features += len(self._general_state_features)
+        if temporal_window < 0:
+            raise ValueError("temporal_window must be non-negative")
+
+        if temporal_window > 0:
+            total_state_features += num_heuristics
+
         self.observation_space = Box(
             low=np.array([-np.inf for _ in range(total_state_features)]),
             high=np.array([np.inf for _ in range(total_state_features)]),
@@ -70,6 +77,13 @@ class FDEnvSelHeur(Env):
         self.conn = None
 
         self._prev_state = None
+        self._last_observation = None
+
+        self.temporal_window = temporal_window
+        self._raw_history = deque(
+            maxlen=max(1, temporal_window)
+        )
+
         self.num_steps = num_steps
         self.time_step_limit = time_step_limit
 
@@ -150,7 +164,10 @@ class FDEnvSelHeur(Env):
         Split received json into state reward and done
         :return:
         """
-        msg = self.recv_msg().decode()
+        packet = self.recv_msg()
+        if packet is None:
+            raise EOFError("Planner closed the socket")
+        msg = packet.decode()
         #print("----------------------------")
         #print(msg)
         #print("=>")
@@ -172,96 +189,177 @@ class FDEnvSelHeur(Env):
             for feature in self._heuristic_state_features:
                 state.append(data["%d" % heuristic_id][feature])
 
+        raw_state = np.asarray(state, dtype=np.float32)
+
         if self._prev_state is None:
             self.__norm_vals = deepcopy(state)
             self._prev_state = deepcopy(state)
-        if self.__state_type != StateType.RAW:  # Transform state to DIFF state or normalize
+
+        if self.__state_type != StateType.RAW:
             tmp_state = state
-            state = list(map(self._transformation_func, state, self._prev_state, self.__norm_vals,
-                             self.__skip_transform))
+            state = list(map(
+                self._transformation_func,
+                state,
+                self._prev_state,
+                self.__norm_vals,
+                self.__skip_transform
+            ))
             self._prev_state = tmp_state
-        return np.array(state), r, done
+
+        if self.temporal_window > 0:
+
+            if self._raw_history:
+                previous = self._raw_history[0]
+
+                # Five original features per heuristic.
+                # Minimum value is at offset 2.
+                temporal_features = [
+                    float(
+                        raw_state[5 * h + 2]
+                        - previous[5 * h + 2]
+                    )
+                    for h in range(self.__num_heuristics)
+                ]
+            else:
+                temporal_features = [
+                    0.0
+                    for _ in range(self.__num_heuristics)
+                ]
+
+            state.extend(temporal_features)
+
+            self._raw_history.append(
+                raw_state.copy()
+            )
+
+        observation = np.array(state)
+        self._last_observation = observation.copy()
+        return observation, r, done
+
+    def _interrupted_step(self, exc):
+        # No final observation/reward arrives on EOF. This is an explicit fallback,
+        # not evidence that a plan was found or that the planner timed out.
+        import logging
+        self.done = True
+        self.kill_connection()
+        if self._last_observation is None:
+            raise RuntimeError("Planner disconnected before an observation") from exc
+        logging.getLogger(__name__).warning(
+            "Planner connection interrupted (%s); truncating episode. "
+            "Reusing last observation with missing reward set to 0.",
+            type(exc).__name__)
+        return (self._last_observation.copy(), 0.0, False,
+                {'needs_reset': True, 'planner_disconnected': True,
+                 'interruption_reason': type(exc).__name__})
 
     def step(self, action: typing.Union[int, typing.List[int]]):
-        """
-        Play RL-Action
-        :param action:
-        :return:
-        """
         self.__step += 1
-        if not np.issubdtype(type(action), np.integer):  # check for core int and any numpy-int
-            try:
-                action = action[0]
-            except IndexError as e:
-                print(type(action))
-                raise e
+        if not np.issubdtype(type(action), np.integer):
+            action = action[0]
         if self.num_steps:
             msg = ','.join([str(action), str(self.num_steps)])
         else:
             msg = str(action)
-        self.send_msg(str.encode(msg))
-        s, r, d = self._process_data()
+        try:
+            self.send_msg(str.encode(msg))
+            s, r, d = self._process_data()
+        except (EOFError, ConnectionResetError, ConnectionAbortedError,
+                BrokenPipeError) as exc:
+            return self._interrupted_step(exc)
+
         info = {}
         if d:
             self.done = True
             self.kill_connection()
-        if self.__step > self.time_step_limit:
+        elif self.time_step_limit >= 0 and self.__step > self.time_step_limit:
             info['needs_reset'] = True
-            self.send_msg(str.encode("END"))
-            self.kill_connection()
-            self.done = True
+            try:
+                self.send_msg(b"END")
+            except (ConnectionResetError, ConnectionAbortedError, BrokenPipeError):
+                pass
+            finally:
+                self.kill_connection()
+                self.done = True
         return s, r, d, info
 
     def reset(self):
-        """
-        Initialize FD
-        :return:
-        """
-        self._prev_state = None
-        self.__step = 0
-        self.__start_time = time.time()
-        if not self.done:  # This means we interrupt FD before a plan was found
-            # Inform FD about imminent shutdown of the connection
-            self.send_msg(str.encode("END"))
-        self.done = False
-        if self.conn:
-            self.conn.shutdown(2)
-            self.conn.close()
-            self.conn = None
-        if not self.socket:
+        import logging
+        # A planner can also exit before its initial state or during warm-up.
+        # Do not pass an ended warm-up episode to the learner as a fresh one.
+        if not self.done and self.conn is not None:
+            try:
+                self.send_msg(b"END")
+            except (ConnectionResetError, ConnectionAbortedError, BrokenPipeError):
+                pass
+        self.kill_connection()
+        while True:
+            self._prev_state = None
+            self._raw_history.clear()
+            self._last_observation = None
+            self.__step = 0
+            self.__start_time = time.time()
+            self.done = False
+
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.socket.bind((self.host, self.port))
+            self.socket.listen()
+            if self._port_file_id:
+                fp = joinpath(self._config_dir, 'port_{:d}.txt'.format(self._port_file_id))
+            else:
+                fp = joinpath(self._config_dir, 'port.txt')
+            with open(fp, 'w') as portfh:
+                portfh.write(str(self.port))
+            print(fp, flush=True)
+            self.conn, address = self.socket.accept()
+            # The launcher runs one planner at a time. Remove this episode's
+            # readiness file before another reset can create the next one.
+            remove(fp)
+            try:
+                s, _, d = self._process_data()
+            except (EOFError, ConnectionResetError, ConnectionAbortedError,
+                    BrokenPipeError) as exc:
+                logging.getLogger(__name__).warning(
+                    "Planner disconnected during initial observation (%s); "
+                    "waiting for the next planning problem.", type(exc).__name__)
+                self.done = True
+                self.kill_connection()
+                continue
 
-        # write down port such that FD can potentially read where to connect to
-        if self._port_file_id:
-            fp = joinpath(self._config_dir, 'port_{:d}.txt'.format(self._port_file_id))
-        else:
-            fp = joinpath(self._config_dir, 'port.txt')
-        with open(fp, 'w') as portfh:
-            portfh.write(str(self.port))
-        print(fp)
+            if d:
+                self.done = True
+                self.kill_connection()
+                logging.getLogger(__name__).warning(
+                    "Planner ended before warm-up; waiting for next problem.")
+                continue
 
-        self.socket.listen()
-        self.conn, address = self.socket.accept()
-        s, _, _ = self._process_data()
-        if self.max_rand_steps > 1:
-            for _ in range(self.rng.randint(1, self.max_rand_steps + 1)):
-                s, _, _, _ = self.step(self.action_space.sample())
-        else:
-            s, _, _, _ = self.step(0)  # hard coded to zero as initial step
-
-        remove(fp)  # remove the port file such that there is no chance of loading the old port
-        return s
+            if self.max_rand_steps > 1:
+                actions = range(self.rng.randint(1, self.max_rand_steps + 1))
+            else:
+                actions = range(1)
+            ended = False
+            for _ in actions:
+                action = self.action_space.sample() if self.max_rand_steps > 1 else 0
+                s, _, d, info = self.step(action)
+                if d or info.get('needs_reset', False):
+                    ended = True
+                    break
+            if ended:
+                logging.getLogger(__name__).warning(
+                    "Planner episode ended during warm-up; waiting for next problem.")
+                continue
+            return s
 
     def kill_connection(self):
         """Kill the connection"""
         if self.conn:
-            self.conn.shutdown(2)
+            try:
+                self.conn.shutdown(2)
+            except OSError:
+                pass
             self.conn.close()
             self.conn = None
         if self.socket:
-            self.socket.shutdown(2)
             self.socket.close()
             self.socket = None
 
