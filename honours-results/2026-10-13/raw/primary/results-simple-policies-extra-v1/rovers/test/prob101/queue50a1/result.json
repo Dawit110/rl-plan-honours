@@ -1,0 +1,50 @@
+{
+  "completed": true,
+  "config": {
+    "controller": [
+      "/Users/dawitarega/miniforge3/envs/rl-plan/bin/python",
+      "-u",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/simple-policies-extra-v1/runtime/simple_policy.py",
+      "--policy",
+      "queue50a1",
+      "--port",
+      "13643",
+      "--seed",
+      "1"
+    ],
+    "cpu_seconds": 300,
+    "planner": [
+      "/Users/dawitarega/miniforge3/envs/rl-plan/bin/python",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/fast-downward/fast-downward.py",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/rovers/rovers/domain.pddl",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/rovers/rovers/test/prob101.pddl",
+      "--search",
+      "rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=true),rl_control_interval=0,rl_client_port=13643)"
+    ],
+    "port": 13643,
+    "resident_limit_bytes": 4294967296,
+    "task": {
+      "budget": null,
+      "domain": "rovers",
+      "model": "queue50a1",
+      "phase": "test",
+      "problem": "prob101.pddl",
+      "seed": 1
+    },
+    "wall_safeguard": 1800
+  },
+  "controller_exit_code": -15,
+  "cpu_overshoot_seconds": 0,
+  "cpu_seconds": 28.862232916,
+  "expanded": 19101,
+  "generated": 555098,
+  "max_case_processes": 3,
+  "peak_sampled_resident_bytes": 123150336,
+  "plan_length": 44,
+  "planner_exit_code": 0,
+  "snapshot_retries": 0,
+  "status": "solved",
+  "total_wall_seconds": 31.377002661,
+  "waited_child_cpu_after_cleanup": 28.886957,
+  "wall_seconds": 31.340466512
+}

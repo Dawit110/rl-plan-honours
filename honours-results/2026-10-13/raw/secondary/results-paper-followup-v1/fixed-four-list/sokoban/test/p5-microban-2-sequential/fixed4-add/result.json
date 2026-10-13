@@ -1,0 +1,51 @@
+{
+  "completed": true,
+  "config": {
+    "controller": [
+      "/opt/anaconda3/envs/rl-plan/bin/python",
+      "-u",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/paper-followup-v1/runtime/fixed_policy.py",
+      "--action",
+      "3",
+      "--port",
+      "13242",
+      "--seed",
+      "1"
+    ],
+    "cpu_seconds": 300,
+    "planner": [
+      "/opt/anaconda3/envs/rl-plan/bin/python",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/fast-downward/fast-downward.py",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/sokoban/sokoban/domain.pddl",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/sokoban/sokoban/test/p5-microban-2-sequential.pddl",
+      "--search",
+      "rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=false),rl_control_interval=0,rl_client_port=13242)"
+    ],
+    "port": 13242,
+    "resident_limit_bytes": 4294967296,
+    "task": {
+      "budget": null,
+      "domain": "sokoban",
+      "model": "add",
+      "phase": "test",
+      "problem": "p5-microban-2-sequential.pddl",
+      "repeat": 1,
+      "seed": 1
+    },
+    "wall_safeguard": 1800
+  },
+  "controller_exit_code": -15,
+  "cpu_overshoot_seconds": 0,
+  "cpu_seconds": 5.650840261,
+  "expanded": 251,
+  "generated": 666,
+  "max_case_processes": 3,
+  "peak_sampled_resident_bytes": 98344960,
+  "plan_length": 61,
+  "planner_exit_code": 0,
+  "snapshot_retries": 3,
+  "status": "solved",
+  "total_wall_seconds": 6.872380683,
+  "waited_child_cpu_after_cleanup": 5.679036999999999,
+  "wall_seconds": 6.851009712
+}

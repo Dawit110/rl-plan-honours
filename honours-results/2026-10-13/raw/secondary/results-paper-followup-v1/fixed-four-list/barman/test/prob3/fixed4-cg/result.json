@@ -1,0 +1,51 @@
+{
+  "completed": true,
+  "config": {
+    "controller": [
+      "/opt/anaconda3/envs/rl-plan/bin/python",
+      "-u",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/paper-followup-v1/runtime/fixed_policy.py",
+      "--action",
+      "1",
+      "--port",
+      "13244",
+      "--seed",
+      "1"
+    ],
+    "cpu_seconds": 300,
+    "planner": [
+      "/opt/anaconda3/envs/rl-plan/bin/python",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/fast-downward/fast-downward.py",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/barman/barman/domain.pddl",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/barman/barman/test/prob3.pddl",
+      "--search",
+      "rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=false),rl_control_interval=0,rl_client_port=13244)"
+    ],
+    "port": 13244,
+    "resident_limit_bytes": 4294967296,
+    "task": {
+      "budget": null,
+      "domain": "barman",
+      "model": "cg",
+      "phase": "test",
+      "problem": "prob3.pddl",
+      "repeat": 1,
+      "seed": 1
+    },
+    "wall_safeguard": 1800
+  },
+  "controller_exit_code": -15,
+  "cpu_overshoot_seconds": 0,
+  "cpu_seconds": 17.058484058999998,
+  "expanded": 5612,
+  "generated": 28154,
+  "max_case_processes": 3,
+  "peak_sampled_resident_bytes": 100089856,
+  "plan_length": 27,
+  "planner_exit_code": 0,
+  "snapshot_retries": 0,
+  "status": "solved",
+  "total_wall_seconds": 18.719526430000002,
+  "waited_child_cpu_after_cleanup": 17.081429,
+  "wall_seconds": 18.696078076000003
+}

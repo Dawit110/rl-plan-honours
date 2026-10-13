@@ -1,0 +1,340 @@
+--- a/src/search/search_engines/interval_control.h
++++ b/src/search/search_engines/interval_control.h
+@@ -0,0 +1,62 @@
++#ifndef RL_INTERVAL_CONTROL_H
++#define RL_INTERVAL_CONTROL_H
++#include <map>
++#include <string>
++#include <cmath>
++#include <stdexcept>
++
++namespace decision_interval {
++using Stats = std::map<int, std::map<std::string, double>>;
++// Called before EVERY removal, including removals of already-closed entries.
++// Only actual expansions advance the duration and patience counters.
++class Control {
++public:
++    int mode, fixed, minimum, patience, maximum;
++    int action = -1;
++    long decisions = 0, removals = 0, start_expanded = 0, last_expanded = 0;
++    long stale = 0;
++    std::map<int, double> best;
++    std::map<long, long> histogram;
++    std::string reason = "initial";
++    Control(int mode, int fixed, int minimum, int patience, int maximum)
++        : mode(mode), fixed(fixed), minimum(minimum), patience(patience), maximum(maximum) {
++        if (mode < 0 || mode > 2 || fixed < 1 || minimum < 1 || patience < 1 || maximum < minimum)
++            throw std::invalid_argument("Invalid interval constants");
++    }
++    bool due(const Stats &stats, long expanded) {
++        bool improved = false;
++        for (const auto &queue : stats) {
++            const auto &s = queue.second;
++            const double value = s.at("Min Value");
++            if (s.at("Open List Entries") > 0 && std::isfinite(value)) {
++                auto old = best.find(queue.first);
++                if (old == best.end() || value < old->second) {
++                    best[queue.first] = value;
++                    if (queue.first == action) improved = true;
++                }
++            }
++        }
++        stale = improved ? 0 : stale + expanded - last_expanded;
++        last_expanded = expanded;
++        const long age = expanded - start_expanded;
++        if (decisions == 0) reason = "initial";
++        else if (decisions == 1) reason = "warmup";
++        else if (mode == 0) reason = "every_removal";
++        else if (stats.at(action).at("Open List Entries") == 0) reason = "empty";
++        else if (mode == 1 && age >= fixed) reason = "fixed";
++        else if (mode == 2 && age >= maximum) reason = "maximum";
++        else if (mode == 2 && age >= minimum && stale >= patience) reason = "stagnation";
++        else return false;
++        return true;
++    }
++    void choose(int selected, long expanded) {
++        if (selected < 0 || selected > 3) throw std::invalid_argument("Invalid action");
++        if (decisions > 0) ++histogram[expanded - start_expanded];
++        action = selected;
++        start_expanded = expanded;
++        stale = 0;
++        ++decisions;
++    }
++};
++}
++#endif
+--- a/src/search/search_engines/plugin_rl_eager.cc
++++ b/src/search/search_engines/plugin_rl_eager.cc
+@@ -24,6 +24,11 @@
+     parser.add_option<int>("rl_client_port", "rl client port", "54321");
+     parser.add_option<int>("rl_control_interval", "rl control interval", "0");
+ 
++    parser.add_option<int>("interval_mode", "0 every removal; 1 fixed expansions; 2 adaptive", "0");
++    parser.add_option<int>("interval_fixed", "successful expansions per fixed block", "16");
++    parser.add_option<int>("interval_min", "minimum adaptive block", "4");
++    parser.add_option<int>("interval_patience", "expansions without new best queue minimum", "8");
++    parser.add_option<int>("interval_max", "maximum adaptive block", "64");
+     SearchEngine::add_pruning_option(parser);
+     SearchEngine::add_options_to_parser(parser);
+     Options opts = parser.parse();
+--- a/src/search/search_engines/rl_client.cc
++++ b/src/search/search_engines/rl_client.cc
+@@ -1,6 +1,8 @@
+ #include "rl_client.h"
+ #include <iostream>
+ #include <cstdio>
++#include <cerrno>
++#include <stdexcept>
+ 
+ namespace rl_client {
+ 
+@@ -43,11 +45,13 @@
+ }
+ 
+ void RLClient::send_msg(const std::string& msg) const {
+-    char* cstr_msg = new char[msg.size() + 1];
+-    msg.copy(cstr_msg, msg.size() + 1);
+-    cstr_msg[msg.size()] = '\0'; 
+-    send(sock , cstr_msg, strlen(cstr_msg), 0);
+-    delete[] cstr_msg;
++    size_t sent = 0;
++    while (sent < msg.size()) {
++        ssize_t n = send(sock, msg.data() + sent, msg.size() - sent, 0);
++        if (n < 0 && errno == EINTR) continue;
++        if (n <= 0) { perror("RL send failed"); std::exit(70); }
++        sent += static_cast<size_t>(n);
++    }
+ }
+ 
+ void RLClient::send_msg(const std::map<int, std::map<std::string, double>>& open_lists_stats, double reward, bool done) const {
+@@ -76,44 +80,69 @@
+ }
+ 
+ std::string RLClient::read_msg() const {
+-    char buffer[1024];
++    auto exact = [this](size_t count) {
++        std::string out(count, '\0');
++        size_t used = 0;
++        while (used < count) {
++            ssize_t n = recv(sock, &out[used], count - used, 0);
++            if (n < 0 && errno == EINTR) continue;
++            if (n <= 0) { std::cerr << "RL socket closed or failed" << std::endl; std::exit(70); }
++            used += static_cast<size_t>(n);
++        }
++        return out;
++    };
++    std::string header = exact(4);
++    if (header.find_first_not_of(" 0123456789") != std::string::npos) std::exit(70);
++    int count = std::stoi(header);
++    if (count < 1 || count > 9999) std::exit(70);
++    std::string body = exact(count);
++    if (body == "END") { std::cout << "Termination due to RL agent" << std::endl; std::exit(0); }
++    if (body.size() != 1 || body[0] < '0' || body[0] > '3') std::exit(70);
++    return header + body;
++}
+ 
+-    ssize_t valread = read(sock, buffer, sizeof(buffer));
++std::string stats_json(const decision_interval::Stats &stats) {
++    std::string text = "{";
++    bool first_queue = true;
++    for (const auto &queue : stats) {
++        if (!first_queue) text += ",";
++        first_queue = false;
++        text += "\"" + std::to_string(queue.first) + "\":{";
++        bool first = true;
++        for (const auto &pair : queue.second) {
++            if (!first) text += ",";
++            first = false;
++            text += "\"" + pair.first + "\":" + std::to_string(pair.second);
++        }
++        text += "}";
++    }
++    return text + "}";
++}
+ 
+-    if (valread < 0) {
+-        perror("RL socket read failed");
+-        std::exit(70);
++void RLClient::send_interval(const decision_interval::Stats &current,
++    const decision_interval::Stats &previous, const decision_interval::Control &control,
++    long expanded, bool done, bool failed) const {
++    std::string data = stats_json(current);
++    data.pop_back();
++    data += ",\"interval_previous\":" + stats_json(previous);
++    data += ",\"interval_meta\":{\"expanded\":" + std::to_string(expanded);
++    data += ",\"removals\":" + std::to_string(control.removals);
++    data += ",\"decisions\":" + std::to_string(control.decisions);
++    data += ",\"active_block_expansions\":" + std::to_string(expanded - control.start_expanded);
++    data += ",\"reason\":\"" + control.reason + "\"";
++    data += ",\"completed_interval_histogram\":{";
++    bool first = true;
++    for (const auto &h : control.histogram) {
++        if (!first) data += ",";
++        first = false;
++        data += "\"" + std::to_string(h.first) + "\":" + std::to_string(h.second);
+     }
+-
+-    if (valread == 0) {
+-        std::cerr
+-            << "RL socket closed while waiting for an action."
+-            << std::endl;
+-        std::exit(70);
+-    }
+-
+-    std::string msg(buffer, static_cast<size_t>(valread));
+-
+-    if (msg.find("END") != std::string::npos) {
+-        std::cout << "Termination due to RL agent"
+-                  << std::endl;
+-        std::exit(0);
+-    }
+-
+-    if (msg.size() < 5) {
+-        std::cerr
+-            << "Invalid RL action message: expected at least "
+-            << "5 bytes, received "
+-            << msg.size()
+-            << " bytes. Message: ["
+-            << msg
+-            << "]"
+-            << std::endl;
+-
+-        std::exit(70);
+-    }
+-
+-    return msg;
++    data += "}}";
++    data += ",\"reward\":-1,\"done\":" + std::to_string(done ? 1 : 0);
++    data += ",\"search_failed\":" + std::to_string(failed ? 1 : 0) + "}";
++    if (data.size() > 9999) throw std::runtime_error("RL observation exceeds 4-digit framing");
++    std::string length = std::to_string(data.size());
++    send_msg(std::string(4-length.size(), '0') + length + data);
+ }
+ 
+ void RLClient::closeConn() const {
+--- a/src/search/search_engines/rl_client.h
++++ b/src/search/search_engines/rl_client.h
+@@ -10,8 +10,10 @@
+ #include <unistd.h>
+ #include <string>
+ #include <map>
++#include "interval_control.h"
+ 
+ namespace rl_client {
++std::string stats_json(const decision_interval::Stats &stats);
+ 
+ class RLClient {
+ protected:
+@@ -33,6 +35,9 @@
+ 
+     void send_msg(const std::map<int, std::map<std::string, double>>& open_lists_stats, double reward, bool done) const;
+ 
++    void send_interval(const decision_interval::Stats &current,
++        const decision_interval::Stats &previous, const decision_interval::Control &control,
++        long expanded, bool done, bool failed) const;
+     std::string read_msg() const;
+ };
+ 
+--- a/src/search/search_engines/rl_eager_search.cc
++++ b/src/search/search_engines/rl_eager_search.cc
+@@ -16,6 +16,8 @@
+ RLEagerSearch::RLEagerSearch(const Options &opts)
+     : eager_search::EagerSearch(opts),
+       rl_client(opts.get<int>("rl_client_port"), "127.0.0.1"),
++      interval(opts.get<int>("interval_mode"), opts.get<int>("interval_fixed"),
++               opts.get<int>("interval_min"), opts.get<int>("interval_patience"), opts.get<int>("interval_max")),
+       rl_control_interval(opts.get<int>("rl_control_interval")),
+       rl_steps_until_control(0),
+       rl_answer("") {
+@@ -23,13 +25,20 @@
+ 
+ void RLEagerSearch::initialize() {
+     EagerSearch::initialize();
+-    assert(rl_control_interval >= 0);
++    if (rl_control_interval != 0) throw std::invalid_argument("Use interval options, with rl_control_interval=0");
++    if (std::getenv("RL_INTERVAL_TRACE")) trace.open("interval-trace.jsonl");
+     std::cout << "Setup connection to RL Agent!" << std::endl;
+     bool success = rl_client.init_connection();
+     if (!success) {
+         utils::exit_with(utils::ExitCode::SEARCH_INPUT_ERROR);
+     }
+     std::cout << "Connection created!" << std::endl;
++}
++
++void RLEagerSearch::observe(bool done, bool failed) {
++    if (previous_stats.empty()) previous_stats = open_lists_stats;
++    rl_client.send_interval(open_lists_stats, previous_stats, interval,
++                            statistics.get_expanded(), done, failed);
+ }
+ 
+ // Mainly the step of eager search
+@@ -39,22 +48,26 @@
+         if (open_list->empty()) {
+             cout << "Completely explored state space -- no solution!" << endl;
+             // Send fail to RL agent
+-            rl_client.send_msg("0047Completely explored state space -- no solution!");
++            open_list->get_open_lists_statistics(open_lists_stats);
++            observe(true, true);
+             return FAILED;
+         }
+ 
+-        // If the control sequence is 0 we choice ask for a new selection
+-        if (rl_steps_until_control == 0) {
+-            rl_steps_until_control = rl_control_interval;
+-            open_list->get_open_lists_statistics(open_lists_stats);
+-            rl_client.send_msg(open_lists_stats, -(rl_control_interval+1), false);
++        open_list->get_open_lists_statistics(open_lists_stats);
++        if (interval.due(open_lists_stats, statistics.get_expanded())) {
++            observe(false);
+             rl_answer = rl_client.read_msg();
+-            // std::cout << "RL-Action: " << rl_answer.substr(4,1) << std::endl;
+-        } else {
+-            rl_steps_until_control--;
+-        }
+-
+-        StateID id = open_list->remove_min(std::atoi(rl_answer.substr(4,1).c_str()));
++            interval.choose(std::stoi(rl_answer.substr(4)), statistics.get_expanded());
++        }
++        if (trace.is_open()) {
++            trace << "{\"stats\":" << rl_client::stats_json(open_lists_stats)
++                  << ",\"expanded\":" << statistics.get_expanded()
++                  << ",\"action\":" << interval.action << "}" << std::endl;
++        }
++        // History advances even when this removal will discard a closed entry.
++        previous_stats = open_lists_stats;
++        StateID id = open_list->remove_min(interval.action);
++        ++interval.removals;
+         // StateID id = open_list->remove_min();
+         // TODO is there a way we can avoid creating the state here and then
+         //      recreate it outside of this function with node.get_state()?
+@@ -115,7 +128,7 @@
+     GlobalState s = node->get_state();
+     if (check_goal_and_set_plan(s)) {
+         open_list->get_open_lists_statistics(open_lists_stats);
+-        rl_client.send_msg(open_lists_stats, -(rl_control_interval+1), true);
++        observe(true);
+         return SOLVED;
+     }
+ 
+--- a/src/search/search_engines/rl_eager_search.h
++++ b/src/search/search_engines/rl_eager_search.h
+@@ -4,6 +4,8 @@
+ #include "eager_search.h"
+ 
+ #include "rl_client.h"
++#include "interval_control.h"
++#include <fstream>
+ #include "../utils/timer.h"
+ 
+ class Evaluator;
+@@ -18,6 +20,10 @@
+ 
+     // RL relevant
+     rl_client::RLClient rl_client;
++    decision_interval::Control interval;
++    decision_interval::Stats previous_stats;
++    std::ofstream trace;
++    void observe(bool done, bool failed = false);
+     int rl_control_interval;
+     int rl_steps_until_control;
+     std::string rl_answer;

@@ -1,0 +1,8 @@
+{
+  "cpu_seconds": 300,
+  "domain": "barman",
+  "fixed_four_lists": true,
+  "manifest_sha256": "189249d6f0329ce28c5e84ecab76b0f697cdd0de9de10b889e529f69a8793404",
+  "model_hashes": {},
+  "sampled_aggregate_resident_limit_bytes": 4294967296
+}

@@ -1,0 +1,50 @@
+{
+  "completed": true,
+  "config": {
+    "controller": [
+      "/Users/dawitarega/miniforge3/envs/rl-plan/bin/python",
+      "-u",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/simple-policies-extra-v1/runtime/simple_policy.py",
+      "--policy",
+      "queue50a1",
+      "--port",
+      "13643",
+      "--seed",
+      "1"
+    ],
+    "cpu_seconds": 300,
+    "planner": [
+      "/Users/dawitarega/miniforge3/envs/rl-plan/bin/python",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/fast-downward/fast-downward.py",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/blocksworld/blocksworld/domain.pddl",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/blocksworld/blocksworld/test/prob125.pddl",
+      "--search",
+      "rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=true),rl_control_interval=0,rl_client_port=13643)"
+    ],
+    "port": 13643,
+    "resident_limit_bytes": 4294967296,
+    "task": {
+      "budget": null,
+      "domain": "blocksworld",
+      "model": "queue50a1",
+      "phase": "test",
+      "problem": "prob125.pddl",
+      "seed": 1
+    },
+    "wall_safeguard": 1800
+  },
+  "controller_exit_code": -15,
+  "cpu_overshoot_seconds": 0,
+  "cpu_seconds": 17.243009104000002,
+  "expanded": 7458,
+  "generated": 58444,
+  "max_case_processes": 3,
+  "peak_sampled_resident_bytes": 109350912,
+  "plan_length": 84,
+  "planner_exit_code": 0,
+  "snapshot_retries": 1,
+  "status": "solved",
+  "total_wall_seconds": 17.728566,
+  "waited_child_cpu_after_cleanup": 17.249662,
+  "wall_seconds": 17.718507886
+}

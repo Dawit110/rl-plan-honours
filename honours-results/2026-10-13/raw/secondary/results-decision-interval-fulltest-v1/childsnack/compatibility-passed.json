@@ -1,0 +1,68 @@
+{
+  "comparisons": [
+    {
+      "counts": {
+        "expanded": [],
+        "plan_cost": [],
+        "plan_length": []
+      },
+      "learned_decisions": 256,
+      "problem": "prob183.pddl",
+      "seed": 1,
+      "solved": false
+    },
+    {
+      "counts": {
+        "expanded": [],
+        "plan_cost": [],
+        "plan_length": []
+      },
+      "learned_decisions": 256,
+      "problem": "prob183.pddl",
+      "seed": 2,
+      "solved": false
+    },
+    {
+      "counts": {
+        "expanded": [],
+        "plan_cost": [],
+        "plan_length": []
+      },
+      "learned_decisions": 256,
+      "problem": "prob183.pddl",
+      "seed": 3,
+      "solved": false
+    }
+  ],
+  "evidence_hashes": {
+    "verification/seed1/compat/1791821344233858000/controller-metrics.json": "e00ded6b6e3826d7c421b6b5da623a533d544dcfeed93d557dfc6f95d72ce85d",
+    "verification/seed1/compat/1791821344233858000/diagnostic.json": "24cf6f1320b90b25a822761ae4ab3c8af779bda95fc7612a53490b88ad9df066",
+    "verification/seed1/compat/1791821344233858000/planner.log": "db5456aa6a0c3322345895f913a0e6c3b3a3903c687183bb225c04009a650c37",
+    "verification/seed1/compat/1791821344233858000/trace.jsonl": "91e6dd5cac2a7e374240c4cd6a40302589a80a2ba2116782cb1c49bb9ce65f9a",
+    "verification/seed1/original/1791821334628016000/controller-metrics.json": "8c8aea28b344acb033667e234ab1d196d0921aa9454c4c225d0b01c956fdb69c",
+    "verification/seed1/original/1791821334628016000/diagnostic.json": "68ce834842923d77a1262eb801b9b56490a483b9e58d3382e54b46912ebf6e65",
+    "verification/seed1/original/1791821334628016000/planner.log": "e527c2b4c5aff7d33df8b80a0baabd6e04cfc57c51cb9f2b0cf854c7a5e6a278",
+    "verification/seed1/original/1791821334628016000/trace.jsonl": "4dfe4f875012b7920ccd1a9ea517ec3a31b02aff342aa55f152dd304260c383d",
+    "verification/seed2/compat/1791821363519547000/controller-metrics.json": "9c09081ea9861206946794927e1e0e01fa19eeb9bb928831dc17b9d3c13abe73",
+    "verification/seed2/compat/1791821363519547000/diagnostic.json": "e971116b7ab9bf43a7aea3432641e7ec14af4b83f594e9a3431cf9514853712c",
+    "verification/seed2/compat/1791821363519547000/planner.log": "3c4c8e0bc6e69b50e238ceadeeb0cfd8dc6b0853de117486091e2678f0a7254f",
+    "verification/seed2/compat/1791821363519547000/trace.jsonl": "fadf6fac2b6c796d53454523e7c5ab00b66ec4f315ec9dedd6b8a8945adfd40c",
+    "verification/seed2/original/1791821353827979000/controller-metrics.json": "dc386b3168860c584771762ad5897cc17c38d77742c9bc4e1bb2701d2d1b69d3",
+    "verification/seed2/original/1791821353827979000/diagnostic.json": "4a39195fea47b1fe5ac3fd20e5ccab5f60c3823f02a47c5e92cc5ba2b5253b6d",
+    "verification/seed2/original/1791821353827979000/planner.log": "92e03d800e9cfda8c941bf66ee50328c2e7cd064161b505e5571be7245a548cd",
+    "verification/seed2/original/1791821353827979000/trace.jsonl": "b7aefe9430d3aca58901be7549d2d85def87b60c5ae212e4004479ec240f7aba",
+    "verification/seed3/compat/1791821382705309000/controller-metrics.json": "d68ea08cf23a64b347890e5f00e7aeb45aad1c11571ae76d0b43224d3c985a48",
+    "verification/seed3/compat/1791821382705309000/diagnostic.json": "33b082fa9e04eaf42518d5269978e5e98816db2497e759ca51b543ccddf078bd",
+    "verification/seed3/compat/1791821382705309000/planner.log": "570131d0f7f94246cfcdb25ab9f2edb5188fcfa3597dbcdd21de45c860f80149",
+    "verification/seed3/compat/1791821382705309000/trace.jsonl": "ddd57e4a528824637f91c97b13f83eeee1c8f18b64ebc0f5100512ac9d1a90a2",
+    "verification/seed3/original/1791821373068556000/controller-metrics.json": "2565d98b477de6efcc6a3ee431f3afbfcb9ecf1076ee0ebb2f9644cad96e8466",
+    "verification/seed3/original/1791821373068556000/diagnostic.json": "907968b5720f8a72ceba5e166f888261c89228859cdc0ee6bd493376714120f4",
+    "verification/seed3/original/1791821373068556000/planner.log": "c04a233d6eec9eefdad0a79341f3be0114c8d9019b4c810927bf1878c48cf4a2",
+    "verification/seed3/original/1791821373068556000/trace.jsonl": "156b4216253a4dfb1c5a463b8d23461613d8c9e58d8850d8c0e63a8e70c15527"
+  },
+  "identity": {
+    "decision_prefix_limit": 256,
+    "protocol_sha256": "cc19bd9565af3a79da01c5402057db9a392f56d813991045098722526f4fe8b1"
+  },
+  "scope": "Identical raw observations, float32 model inputs, greedy actions; expansion/plan statistics when solved. Bounded prefixes are not full-search proofs."
+}

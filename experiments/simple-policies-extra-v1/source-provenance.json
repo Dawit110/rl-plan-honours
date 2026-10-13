@@ -1,0 +1,30 @@
+[
+  {
+    "source": "rl-env/run_progress4.py",
+    "source_sha256": "44c2eaa63b99eedbad0f01a079ef85858ed57ec7b2a8e3380bc6280add531aaf",
+    "class_name": "NormalizedProgressAgent",
+    "class_body_sha256": "27e4c9a8a9f3d0a504b63905d2f81e3a38306cfdd85acf1f50a7f209ffed028b",
+    "change": "verbatim class body; CLI/imports omitted"
+  },
+  {
+    "source": "rl-env/run_stag_progress4.py",
+    "source_sha256": "af25eaa9a6e35b55a5bf662596921a892e4ea05b833178eb1d2d821d41d2840e",
+    "class_name": "StagnationProgressAgent",
+    "class_body_sha256": "4ef2254d7335fb5fe2659bc207b9a08da8097f8ecd9e68ba8d9f6e80cc102261",
+    "change": "verbatim class body; CLI/imports omitted"
+  },
+  {
+    "source": "rl-env/run_probe_exploit4.py",
+    "source_sha256": "0b514ac21ea76f6a9468a09113d26707ff1650bfa16aa38ff0a2bafac30f0ae0",
+    "class_name": "ProbeThenExploitAgent",
+    "class_body_sha256": "6f0d755bb72246005bd4a69fb19ecff286261a4f3b6eb63eb5887ea5660d3485",
+    "change": "verbatim class body; CLI/imports omitted"
+  },
+  {
+    "source": "rl-env/run_progress_queue4.py",
+    "source_sha256": "865ff3b98a5fc7e3a35e4f0a9fc18e16b91976df00282fda11e5909cc2e7d509",
+    "class_name": "ProgressQueueAgent",
+    "class_body_sha256": "77b62832e017dab9001511b163c3ff90488c4fcd46573ba68f4a03f83b2923c5",
+    "change": "verbatim class body; CLI/imports omitted"
+  }
+]

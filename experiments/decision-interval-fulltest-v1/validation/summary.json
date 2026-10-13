@@ -1,0 +1,13 @@
+{
+  "native_compatibility_pairs": 18,
+  "interval_native_sessions": 12,
+  "cpp_control_checks": 9,
+  "python_test_groups": 4,
+  "frozen_original_runtimes_checked": 18,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "note": "Native action source was NumPy with uploaded weights and planner RNG seed 1. Full Mac Chainer gate is pending; no planning performance claim.",
+  "full_test_cases": 5400,
+  "full_test_cases_per_domain": 900,
+  "native_evidence_reused": "Identical C++ patch and adapter from the validated pilot",
+  "default_workers_per_mac": 4
+}

@@ -1,0 +1,250 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /opt/anaconda3/envs/rl-plan/bin/python /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/decision-interval-fulltest-v1/planner/builds/release/bin/translate/translate.py /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/barman/barman/domain.pddl /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/barman/barman/train/prob19.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.002s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.005s wall-clock]
+Preparing model... [0.000s CPU, 0.002s wall-clock]
+Generated 115 rules.
+Computing model... [0.010s CPU, 0.015s wall-clock]
+1404 relevant atoms
+1289 auxiliary atoms
+2693 final queue length
+4917 total queue pushes
+Completing instantiation... [0.030s CPU, 0.031s wall-clock]
+Instantiating: [0.050s CPU, 0.054s wall-clock]
+Computing fact groups...
+Finding invariants...
+24 initial candidates
+Finding invariants: [0.010s CPU, 0.007s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+120 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.010s CPU, 0.008s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.002s wall-clock]
+Translating task: [0.040s CPU, 0.036s wall-clock]
+1508 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+3 propositions removed
+Detecting unreachable propositions: [0.010s CPU, 0.016s wall-clock]
+Reordering and filtering variables...
+123 of 123 variables necessary.
+6 of 9 mutex groups necessary.
+902 of 902 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.010s CPU, 0.010s wall-clock]
+Translator variables: 123
+Translator derived variables: 0
+Translator facts: 257
+Translator goal facts: 4
+Translator mutex groups: 6
+Translator total mutex groups size: 18
+Translator operators: 902
+Translator axioms: 0
+Translator task size: 8728
+warning: could not determine peak memory
+Writing output... [0.000s CPU, 0.009s wall-clock]
+Done! [0.130s CPU, 0.139s wall-clock]
+
+translate exit code: 0
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/decision-interval-fulltest-v1/planner/builds/release/bin/downward --search 'rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=true),rl_control_interval=0,rl_client_port=14841,interval_mode=0,interval_fixed=16,interval_min=4,interval_patience=8,interval_max=64)' --internal-plan-file sas_plan < output.sas
+reading input... [t=0.000304496s]
+done reading input! [t=0.0305583s]
+Simplifying 3514 unary operators... done! [2734 unary operators]
+time to simplify: 0.00344041s
+Initializing additive heuristic...
+Initializing FF heuristic...
+Initializing heuristic cache... building causal graph...done! [t=0.00167272s]
+done!
+Initializing causal graph heuristic...
+Initializing context-enhanced additive heuristic...
+Simplifying 3514 unary operators... done! [2734 unary operators]
+time to simplify: 0.00366143s
+Initializing additive heuristic...
+Building successor generator...done! [t=0.071077s]
+peak memory difference for successor generator creation: 0 KB
+time for successor generation creation: 0.000433795s
+Variables: 123
+FactPairs: 257
+Bytes per state: 16
+Open-List 0: Best-First-Open-List + ff
+Open-List 1: Best-First-Open-List + cg
+Open-List 2: Best-First-Open-List + cea
+Open-List 3: Best-First-Open-List + add
+Conducting best first search without reopening closed nodes, (real) bound = 2147483647
+New best heuristic value for add: 136
+New best heuristic value for cea: 136
+New best heuristic value for cg: 40
+New best heuristic value for ff: 16
+[g=0, 1 evaluated, 0 expanded, t=0.0717237s, 34186524 KB]
+Initial heuristic value for add: 136
+Initial heuristic value for cea: 136
+Initial heuristic value for cg: 40
+Initial heuristic value for ff: 16
+pruning method: none
+Setup connection to RL Agent!
+
+Port: 14841
+Connection created!
+New best heuristic value for cg: 28
+[g=1, 2 evaluated, 1 expanded, t=0.0731496s, 34195740 KB]
+New best heuristic value for add: 88
+New best heuristic value for cea: 88
+[g=1, 4 evaluated, 1 expanded, t=0.0735325s, 34195740 KB]
+New best heuristic value for cg: 27
+[g=3, 48 evaluated, 16 expanded, t=0.0976798s, 34195740 KB]
+New best heuristic value for add: 81
+New best heuristic value for cea: 81
+[g=3, 52 evaluated, 16 expanded, t=0.0982881s, 34195740 KB]
+New best heuristic value for cg: 25
+[g=4, 56 evaluated, 17 expanded, t=0.100118s, 34195740 KB]
+New best heuristic value for cg: 22
+New best heuristic value for ff: 15
+[g=4, 58 evaluated, 17 expanded, t=0.100615s, 34195740 KB]
+New best heuristic value for cg: 15
+[g=5, 59 evaluated, 18 expanded, t=0.102546s, 34195740 KB]
+New best heuristic value for ff: 14
+[g=3, 113 evaluated, 24 expanded, t=0.124037s, 34195740 KB]
+New best heuristic value for add: 62
+New best heuristic value for cea: 62
+[g=3, 117 evaluated, 24 expanded, t=0.124884s, 34195740 KB]
+New best heuristic value for ff: 13
+[g=4, 127 evaluated, 26 expanded, t=0.131774s, 34195740 KB]
+New best heuristic value for cg: 12
+New best heuristic value for ff: 12
+[g=5, 128 evaluated, 27 expanded, t=0.133174s, 34195740 KB]
+New best heuristic value for add: 50
+New best heuristic value for cea: 50
+[g=6, 129 evaluated, 28 expanded, t=0.134695s, 34195740 KB]
+New best heuristic value for add: 42
+New best heuristic value for cea: 42
+[g=8, 395 evaluated, 88 expanded, t=0.332272s, 34196764 KB]
+New best heuristic value for add: 38
+New best heuristic value for cea: 38
+[g=9, 411 evaluated, 90 expanded, t=0.337345s, 34196764 KB]
+New best heuristic value for add: 36
+New best heuristic value for cea: 36
+[g=9, 421 evaluated, 91 expanded, t=0.340511s, 34196764 KB]
+New best heuristic value for ff: 11
+[g=9, 426 evaluated, 91 expanded, t=0.341307s, 34196764 KB]
+New best heuristic value for add: 32
+New best heuristic value for cea: 32
+[g=10, 429 evaluated, 92 expanded, t=0.343129s, 34196764 KB]
+New best heuristic value for ff: 10
+[g=10, 437 evaluated, 92 expanded, t=0.344321s, 34196764 KB]
+New best heuristic value for add: 28
+New best heuristic value for cea: 28
+New best heuristic value for ff: 9
+[g=11, 442 evaluated, 93 expanded, t=0.346402s, 34196764 KB]
+New best heuristic value for add: 20
+New best heuristic value for cea: 20
+[g=12, 449 evaluated, 94 expanded, t=0.348789s, 34196764 KB]
+New best heuristic value for cg: 6
+[g=13, 457 evaluated, 96 expanded, t=0.355111s, 34196764 KB]
+New best heuristic value for cg: 5
+[g=14, 464 evaluated, 97 expanded, t=0.35745s, 34196764 KB]
+New best heuristic value for ff: 8
+[g=20, 565 evaluated, 116 expanded, t=0.393257s, 34196764 KB]
+New best heuristic value for ff: 7
+[g=21, 571 evaluated, 117 expanded, t=0.395066s, 34196764 KB]
+New best heuristic value for ff: 6
+[g=22, 581 evaluated, 118 expanded, t=0.397373s, 34196764 KB]
+New best heuristic value for add: 14
+New best heuristic value for cea: 14
+New best heuristic value for ff: 5
+[g=23, 587 evaluated, 119 expanded, t=0.399254s, 34196764 KB]
+New best heuristic value for add: 10
+New best heuristic value for cea: 10
+New best heuristic value for ff: 4
+[g=24, 597 evaluated, 120 expanded, t=0.401626s, 34196764 KB]
+New best heuristic value for add: 6
+New best heuristic value for cea: 6
+New best heuristic value for ff: 3
+[g=25, 598 evaluated, 121 expanded, t=0.402856s, 34196764 KB]
+New best heuristic value for add: 2
+New best heuristic value for cea: 2
+New best heuristic value for cg: 2
+New best heuristic value for ff: 2
+[g=26, 602 evaluated, 122 expanded, t=0.404509s, 34196764 KB]
+New best heuristic value for add: 1
+New best heuristic value for cea: 1
+New best heuristic value for cg: 1
+New best heuristic value for ff: 1
+[g=27, 608 evaluated, 123 expanded, t=0.406419s, 34196764 KB]
+New best heuristic value for add: 0
+New best heuristic value for cea: 0
+New best heuristic value for cg: 0
+New best heuristic value for ff: 0
+[g=28, 617 evaluated, 124 expanded, t=0.408423s, 34196764 KB]
+Solution found!
+Actual search time: 0.338003s [t=0.410023s]
+grasp left shot5 (1)
+fill-shot shot5 ingredient2 left right dispenser2 (1)
+pour-shot-to-clean-shaker shot5 ingredient2 shaker1 left l0 l1 (1)
+clean-shot shot5 ingredient2 left right (1)
+leave left shot5 (1)
+grasp right shot5 (1)
+fill-shot shot5 ingredient3 right left dispenser3 (1)
+pour-shot-to-used-shaker shot5 ingredient3 shaker1 right l1 l2 (1)
+clean-shot shot5 ingredient3 right left (1)
+fill-shot shot5 ingredient5 right left dispenser5 (1)
+grasp left shaker1 (1)
+leave right shot5 (1)
+shake cocktail2 ingredient2 ingredient3 shaker1 left right (1)
+pour-shaker-to-shot cocktail2 shot2 left shaker1 l2 l1 (1)
+pour-shaker-to-shot cocktail2 shot3 left shaker1 l1 l0 (1)
+empty-shaker left shaker1 cocktail2 l0 l0 (1)
+clean-shaker left right shaker1 (1)
+leave left shaker1 (1)
+grasp right shot5 (1)
+pour-shot-to-clean-shaker shot5 ingredient5 shaker1 right l0 l1 (1)
+clean-shot shot5 ingredient5 right left (1)
+fill-shot shot5 ingredient3 right left dispenser3 (1)
+grasp left shaker1 (1)
+pour-shot-to-used-shaker shot5 ingredient3 shaker1 right l1 l2 (1)
+leave right shot5 (1)
+shake cocktail1 ingredient3 ingredient5 shaker1 left right (1)
+pour-shaker-to-shot cocktail1 shot1 left shaker1 l2 l1 (1)
+pour-shaker-to-shot cocktail1 shot4 left shaker1 l1 l0 (1)
+Plan length: 28 step(s).
+Plan cost: 28
+Expanded 125 state(s).
+Reopened 0 state(s).
+Evaluated 621 state(s).
+Evaluations: 2457
+Generated 862 state(s).
+Dead ends: 9 state(s).
+Number of registered states: 621
+Int hash set load factor: 621/1024 = 0.606445
+Int hash set resizes: 10
+Search time: 0.338727s
+Total time: 0.41003s
+Solution found.
+Peak memory: 34172088 KB
+Remove intermediate file output.sas
+
+search exit code: 0

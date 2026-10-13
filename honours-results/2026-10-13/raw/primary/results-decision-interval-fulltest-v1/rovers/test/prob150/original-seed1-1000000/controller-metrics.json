@@ -1,0 +1,1 @@
+{"controller_process_cpu_seconds": 3.753643, "cpu_at_controller_ready": 2.12362, "inference_cpu_seconds": null, "learned_decisions": 809, "note": "Periodic counters may be lower bounds for interrupted/limited cases.", "observations": 811, "profiling_enabled": false, "socket_receive_wall_seconds": null}

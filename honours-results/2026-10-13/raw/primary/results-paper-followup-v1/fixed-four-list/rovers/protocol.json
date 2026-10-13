@@ -1,0 +1,8 @@
+{
+  "cpu_seconds": 300,
+  "domain": "rovers",
+  "fixed_four_lists": true,
+  "manifest_sha256": "57a6b967d9fbcdca87b02e0bc3a5a95007b2c8d042e478fb9fa8bd5d1341268a",
+  "model_hashes": {},
+  "sampled_aggregate_resident_limit_bytes": 4294967296
+}

@@ -1,0 +1,51 @@
+{
+  "completed": true,
+  "config": {
+    "controller": [
+      "/opt/anaconda3/envs/rl-plan/bin/python",
+      "-u",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/paper-followup-v1/runtime/fixed_policy.py",
+      "--action",
+      "2",
+      "--port",
+      "13244",
+      "--seed",
+      "1"
+    ],
+    "cpu_seconds": 300,
+    "planner": [
+      "/opt/anaconda3/envs/rl-plan/bin/python",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/fast-downward/fast-downward.py",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/childsnack/childsnack/domain.pddl",
+      "/Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/childsnack/childsnack/test/prob122.pddl",
+      "--search",
+      "rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=false),rl_control_interval=0,rl_client_port=13244)"
+    ],
+    "port": 13244,
+    "resident_limit_bytes": 4294967296,
+    "task": {
+      "budget": null,
+      "domain": "childsnack",
+      "model": "cea",
+      "phase": "test",
+      "problem": "prob122.pddl",
+      "repeat": 1,
+      "seed": 1
+    },
+    "wall_safeguard": 1800
+  },
+  "controller_exit_code": -15,
+  "cpu_overshoot_seconds": 0,
+  "cpu_seconds": 12.149012246,
+  "expanded": 7387,
+  "generated": 237929,
+  "max_case_processes": 3,
+  "peak_sampled_resident_bytes": 98766848,
+  "plan_length": 16,
+  "planner_exit_code": 0,
+  "snapshot_retries": 1,
+  "status": "solved",
+  "total_wall_seconds": 12.744331723,
+  "waited_child_cpu_after_cleanup": 12.170147,
+  "wall_seconds": 12.721467266000001
+}

@@ -1,0 +1,196 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /Users/dawitarega/miniforge3/envs/rl-plan/bin/python /Users/dawitarega/Downloads/ANU/Honours/rl-plan/fast-downward/builds/release/bin/translate/translate.py /Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/visitall/visitall/domain.pddl /Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/visitall/visitall/train/prob154.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.020s CPU, 0.021s wall-clock]
+Normalizing task... [0.000s CPU, 0.001s wall-clock]
+Instantiating...
+Generating Datalog program... [0.010s CPU, 0.014s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.000s CPU, 0.001s wall-clock]
+Preparing model... [0.040s CPU, 0.041s wall-clock]
+Generated 6 rules.
+Computing model... [0.090s CPU, 0.083s wall-clock]
+10702 relevant atoms
+4089 auxiliary atoms
+14791 final queue length
+19607 total queue pushes
+Completing instantiation... [0.080s CPU, 0.088s wall-clock]
+Instantiating: [0.220s CPU, 0.230s wall-clock]
+Computing fact groups...
+Finding invariants...
+4 initial candidates
+Finding invariants: [0.000s CPU, 0.001s wall-clock]
+Checking invariant weight... [0.010s CPU, 0.001s wall-clock]
+Instantiating groups... [0.000s CPU, 0.002s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups...
+841 uncovered facts
+Choosing groups: [0.000s CPU, 0.003s wall-clock]
+Building translation key... [0.000s CPU, 0.004s wall-clock]
+Computing fact groups: [0.030s CPU, 0.026s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.001s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.001s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.001s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.010s CPU, 0.004s wall-clock]
+Translating task: [0.100s CPU, 0.097s wall-clock]
+0 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+3 propositions removed
+Detecting unreachable propositions: [0.060s CPU, 0.057s wall-clock]
+Reordering and filtering variables...
+199 of 841 variables necessary.
+0 of 1 mutex groups necessary.
+3248 of 3248 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.020s CPU, 0.017s wall-clock]
+Translator variables: 199
+Translator derived variables: 0
+Translator facts: 1237
+Translator goal facts: 198
+Translator mutex groups: 0
+Translator total mutex groups size: 0
+Translator operators: 3248
+Translator axioms: 0
+Translator task size: 12143
+warning: could not determine peak memory
+Writing output... [0.020s CPU, 0.020s wall-clock]
+Done! [0.480s CPU, 0.478s wall-clock]
+
+translate exit code: 0
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /Users/dawitarega/Downloads/ANU/Honours/rl-plan/fast-downward/builds/release/bin/downward --search 'rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=2,handle_empty_list=true),rl_control_interval=0,rl_client_port=14841)' --internal-plan-file sas_plan < output.sas
+reading input... [t=0.000433287s]
+done reading input! [t=0.0977124s]
+Simplifying 4013 unary operators... done! [4013 unary operators]
+time to simplify: 0.00342654s
+Initializing additive heuristic...
+Initializing FF heuristic...
+Initializing heuristic cache... building causal graph...done! [t=0.000570333s]
+done!
+Initializing causal graph heuristic...
+Initializing context-enhanced additive heuristic...
+Simplifying 4013 unary operators... done! [4013 unary operators]
+time to simplify: 0.00347025s
+Initializing additive heuristic...
+Building successor generator...done! [t=0.130607s]
+peak memory difference for successor generator creation: 208 KB
+time for successor generation creation: 0.00119392s
+Variables: 199
+FactPairs: 1237
+Bytes per state: 28
+Open-List 0: Best-First-Open-List + ff
+Open-List 1: Best-First-Open-List + cg
+Open-List 2: Best-First-Open-List + cea
+Open-List 3: Best-First-Open-List + add
+Conducting best first search without reopening closed nodes, (real) bound = 2147483647
+New best heuristic value for add: 2900
+New best heuristic value for cea: 2900
+New best heuristic value for cg: 2900
+New best heuristic value for ff: 668
+[g=0, 1 evaluated, 0 expanded, t=0.132845s, 33631060 KB]
+Initial heuristic value for add: 2900
+Initial heuristic value for cea: 2900
+Initial heuristic value for cg: 2900
+Initial heuristic value for ff: 668
+pruning method: none
+Setup connection to RL Agent!
+
+Port: 14841
+Connection created!
+New best heuristic value for add: 2886
+New best heuristic value for cea: 2886
+New best heuristic value for cg: 2886
+New best heuristic value for ff: 644
+[g=1, 2 evaluated, 1 expanded, t=0.135346s, 33631060 KB]
+New best heuristic value for add: 2882
+New best heuristic value for cea: 2882
+New best heuristic value for cg: 2882
+[g=2, 6 evaluated, 2 expanded, t=0.142024s, 33639572 KB]
+New best heuristic value for add: 2878
+New best heuristic value for cea: 2878
+New best heuristic value for cg: 2878
+[g=2, 7 evaluated, 2 expanded, t=0.143257s, 33639652 KB]
+New best heuristic value for add: 2874
+New best heuristic value for cea: 2874
+New best heuristic value for cg: 2874
+[g=3, 9 evaluated, 3 expanded, t=0.146956s, 33649028 KB]
+New best heuristic value for ff: 641
+[g=5, 14 evaluated, 5 expanded, t=0.155397s, 33650452 KB]
+New best heuristic value for ff: 640
+[g=5, 15 evaluated, 5 expanded, t=0.15659s, 33650532 KB]
+New best heuristic value for ff: 639
+[g=6, 18 evaluated, 7 expanded, t=0.164084s, 33650772 KB]
+New best heuristic value for add: 2873
+New best heuristic value for cea: 2873
+New best heuristic value for cg: 2873
+[g=6, 29 evaluated, 12 expanded, t=0.183751s, 33652436 KB]
+New best heuristic value for add: 2872
+New best heuristic value for cea: 2872
+New best heuristic value for cg: 2872
+[g=7, 32 evaluated, 13 expanded, t=0.186465s, 33652436 KB]
+New best heuristic value for add: 2870
+New best heuristic value for cea: 2870
+New best heuristic value for cg: 2870
+[g=12, 68 evaluated, 34 expanded, t=0.247791s, 33654100 KB]
+New best heuristic value for add: 2868
+New best heuristic value for cea: 2868
+New best heuristic value for cg: 2868
+[g=13, 72 evaluated, 35 expanded, t=0.250863s, 33654100 KB]
+New best heuristic value for add: 2865
+New best heuristic value for cea: 2865
+New best heuristic value for cg: 2865
+[g=17, 112 evaluated, 58 expanded, t=0.315428s, 33654424 KB]
+New best heuristic value for add: 2864
+New best heuristic value for cea: 2864
+New best heuristic value for cg: 2864
+[g=22, 146 evaluated, 80 expanded, t=0.377322s, 33656792 KB]
+New best heuristic value for add: 2862
+New best heuristic value for cea: 2862
+New best heuristic value for cg: 2862
+[g=23, 149 evaluated, 81 expanded, t=0.380079s, 33656792 KB]
+New best heuristic value for add: 2859
+New best heuristic value for cea: 2859
+New best heuristic value for cg: 2859
+[g=24, 190 evaluated, 105 expanded, t=0.438253s, 33656952 KB]
+New best heuristic value for add: 2858
+New best heuristic value for cea: 2858
+New best heuristic value for cg: 2858
+[g=25, 195 evaluated, 106 expanded, t=0.441795s, 33656952 KB]
+New best heuristic value for ff: 628
+[g=29, 224 evaluated, 127 expanded, t=0.493412s, 33657032 KB]
+New best heuristic value for add: 2856
+New best heuristic value for cea: 2856
+New best heuristic value for cg: 2856
+[g=30, 233 evaluated, 130 expanded, t=0.502125s, 33667352 KB]
+New best heuristic value for add: 2854
+New best heuristic value for cea: 2854
+New best heuristic value for cg: 2854
+[g=31, 236 evaluated, 131 expanded, t=0.504845s, 33667352 KB]
+New best heuristic value for ff: 627
+[g=29, 271 evaluated, 155 expanded, t=0.564769s, 33667672 KB]
+New best heuristic value for add: 2853
+New best heuristic value for cea: 2853
+New best heuristic value for cg: 2853
+[g=38, 283 evaluated, 160 expanded, t=0.577163s, 33667752 KB]
+New best heuristic value for add: 2850
+New best heuristic value for cea: 2850
+New best heuristic value for cg: 2850
+[g=39, 285 evaluated, 161 expanded, t=0.579383s, 33667752 KB]
+Termination due to RL agent
+Peak memory: 33667912 KB
+Remove intermediate file output.sas
+
+search exit code: 0

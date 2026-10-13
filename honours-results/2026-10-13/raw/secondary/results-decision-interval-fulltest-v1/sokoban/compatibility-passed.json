@@ -1,0 +1,86 @@
+{
+  "comparisons": [
+    {
+      "counts": {
+        "expanded": [
+          "78"
+        ],
+        "plan_cost": [
+          "9"
+        ],
+        "plan_length": [
+          "29"
+        ]
+      },
+      "learned_decisions": 91,
+      "problem": "p10-microban-2-sequential.pddl",
+      "seed": 1,
+      "solved": true
+    },
+    {
+      "counts": {
+        "expanded": [
+          "199"
+        ],
+        "plan_cost": [
+          "11"
+        ],
+        "plan_length": [
+          "33"
+        ]
+      },
+      "learned_decisions": 200,
+      "problem": "p10-microban-2-sequential.pddl",
+      "seed": 2,
+      "solved": true
+    },
+    {
+      "counts": {
+        "expanded": [
+          "78"
+        ],
+        "plan_cost": [
+          "9"
+        ],
+        "plan_length": [
+          "29"
+        ]
+      },
+      "learned_decisions": 77,
+      "problem": "p10-microban-2-sequential.pddl",
+      "seed": 3,
+      "solved": true
+    }
+  ],
+  "evidence_hashes": {
+    "verification/seed1/compat/1791833638411722000/controller-metrics.json": "3d5851324366ff235c2c6f97c316a64c84cd4aee840a3c152a31085027abb116",
+    "verification/seed1/compat/1791833638411722000/diagnostic.json": "76fae3e1586cc19934360d756ef8888af228382520feeef3733b440d4b5362fb",
+    "verification/seed1/compat/1791833638411722000/planner.log": "9aafea4ad60f07e86246a0bbd3c80d5639c655b36de4656b456be54c43c83627",
+    "verification/seed1/compat/1791833638411722000/trace.jsonl": "e3803cfd1a39e6a794887d91d30d858ad43e9c98255df491a9d198073052bc60",
+    "verification/seed1/original/1791833637179600000/controller-metrics.json": "356fa7befd4594dc27966c889122652dffb91f953aa94e34226ff757e55e558e",
+    "verification/seed1/original/1791833637179600000/diagnostic.json": "bf6a25107cd9ba6c622474361da3990183ff3195bed17127afa475a9661a1b7f",
+    "verification/seed1/original/1791833637179600000/planner.log": "2d3855ae25d2c9b7caeaa3ef13fffc5729377e97a893031bb51b30e1002d00aa",
+    "verification/seed1/original/1791833637179600000/trace.jsonl": "6170092eebcf1510b349beeb8afb7c5b873d2db08fdde263995e5ac8bbb3a957",
+    "verification/seed2/compat/1791833640986298000/controller-metrics.json": "d33c609bf28e32eedf5dfc33d14ea87a917450821f685a8b0a9d6ab1dde823ef",
+    "verification/seed2/compat/1791833640986298000/diagnostic.json": "9e105304d7c31426beca578896a8e4cff742a660b9f4ab859ec91c31c92f5b58",
+    "verification/seed2/compat/1791833640986298000/planner.log": "f934f0bec11b2789e68b68c3404719817145eb636d3b9e9e0e6369e39d4135fb",
+    "verification/seed2/compat/1791833640986298000/trace.jsonl": "5227d2f36bb474fcad6a93a7bd82687a316df8cc419a5e0a42937e3c3cecf20c",
+    "verification/seed2/original/1791833639646926000/controller-metrics.json": "10a172764903f0804cf807debce2597cd21581659a7be0e6765d4e2b9fbc4ea0",
+    "verification/seed2/original/1791833639646926000/diagnostic.json": "c9625ecfda1ae1e5c52ebf2efe9bc7bedca6dbe4fe8615468087fb079bcb901b",
+    "verification/seed2/original/1791833639646926000/planner.log": "79ba486260e2bda19eff1bd057eedc11ecc95bb24e7d7953fe8a0f7569102dd1",
+    "verification/seed2/original/1791833639646926000/trace.jsonl": "a905889e303ea720eb0698a7817ef7ad6fb96b4d416e56b245da764cac252955",
+    "verification/seed3/compat/1791833643609091000/controller-metrics.json": "d9b3f1ea8469836ba76898778119549e03d3c5c192d7dad549aa0cf8545945f6",
+    "verification/seed3/compat/1791833643609091000/diagnostic.json": "928c9c0afdf932ac4a83cfa92237c7bb2fb70b42f33e9969ec9f7a4066ab21f3",
+    "verification/seed3/compat/1791833643609091000/planner.log": "ff6ff852cf1c596b0cf93e6c7405fd2c22aa9e37c4e3649b6825499a4c42bf32",
+    "verification/seed3/compat/1791833643609091000/trace.jsonl": "2bbd06132887e9143e273bbfc1db83bdfe4fc72f749f15ad6b7f4115eadacad7",
+    "verification/seed3/original/1791833642376067000/controller-metrics.json": "a330e66ecc1b346c45e5586252e2d0630568c47774f3d279a2e4e3d5c30dbd00",
+    "verification/seed3/original/1791833642376067000/diagnostic.json": "a4d0804e6cb111349fdf6ac3d05ffaec0c43d4ea767dc2fa40ce4dbfb6a90ef5",
+    "verification/seed3/original/1791833642376067000/planner.log": "53c9f143685e7fcc2dd1754b9b554256d1f9bb0fe321f24fecf04597daf50509",
+    "verification/seed3/original/1791833642376067000/trace.jsonl": "05920d3b3266edc11656c82f62a2ef2025550cd42d06cdc90cd0f96d585e9ac2"
+  },
+  "identity": {
+    "decision_prefix_limit": 256,
+    "protocol_sha256": "08237c92e6b015b27ba95623cdad4c5a06cec38a24f6276a0b6813d135add1aa"
+  },
+  "scope": "Identical raw observations, float32 model inputs, greedy actions; expansion/plan statistics when solved. Bounded prefixes are not full-search proofs."
+}

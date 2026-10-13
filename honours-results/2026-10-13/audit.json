@@ -1,0 +1,75 @@
+[
+  {
+    "machine": "primary",
+    "family": "fixed",
+    "cases": 1200,
+    "statuses": {
+      "solved": 802,
+      "cpu_timeout": 398
+    }
+  },
+  {
+    "machine": "primary",
+    "family": "aligned",
+    "cases": 1800,
+    "statuses": {
+      "solved": 1346,
+      "cpu_timeout": 454
+    }
+  },
+  {
+    "machine": "primary",
+    "family": "simple",
+    "cases": 1200,
+    "statuses": {
+      "solved": 865,
+      "cpu_timeout": 335
+    }
+  },
+  {
+    "machine": "primary",
+    "family": "interval",
+    "cases": 2700,
+    "statuses": {
+      "solved": 2060,
+      "cpu_timeout": 640
+    }
+  },
+  {
+    "machine": "secondary",
+    "family": "fixed",
+    "cases": 1200,
+    "statuses": {
+      "cpu_timeout": 459,
+      "solved": 711,
+      "search_unsolved": 30
+    }
+  },
+  {
+    "machine": "secondary",
+    "family": "aligned",
+    "cases": 1800,
+    "statuses": {
+      "cpu_timeout": 420,
+      "solved": 1380
+    }
+  },
+  {
+    "machine": "secondary",
+    "family": "simple",
+    "cases": 1200,
+    "statuses": {
+      "cpu_timeout": 175,
+      "solved": 1025
+    }
+  },
+  {
+    "machine": "secondary",
+    "family": "interval",
+    "cases": 2700,
+    "statuses": {
+      "cpu_timeout": 593,
+      "solved": 2107
+    }
+  }
+]

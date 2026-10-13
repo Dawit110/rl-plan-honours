@@ -1,0 +1,188 @@
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /opt/anaconda3/envs/rl-plan/bin/python /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/fast-downward/builds/release/bin/translate/translate.py /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/sokoban/sokoban/domain.pddl /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/experiments/sokoban/sokoban/train/p10-microban-2-sequential.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.000s CPU, 0.002s wall-clock]
+Normalizing task... [0.000s CPU, 0.000s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.001s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.003s wall-clock]
+Preparing model... [0.000s CPU, 0.001s wall-clock]
+Generated 38 rules.
+Computing model... [0.000s CPU, 0.006s wall-clock]
+432 relevant atoms
+646 auxiliary atoms
+1078 final queue length
+1310 total queue pushes
+Completing instantiation... [0.010s CPU, 0.004s wall-clock]
+Instantiating: [0.020s CPU, 0.014s wall-clock]
+Computing fact groups...
+Finding invariants...
+7 initial candidates
+Finding invariants: [0.000s CPU, 0.005s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.001s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.000s wall-clock]
+Choosing groups...
+23 uncovered facts
+Choosing groups: [0.000s CPU, 0.000s wall-clock]
+Building translation key... [0.000s CPU, 0.000s wall-clock]
+Computing fact groups: [0.000s CPU, 0.007s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.000s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.000s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.000s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.000s CPU, 0.000s wall-clock]
+Processing axioms: [0.000s CPU, 0.000s wall-clock]
+Translating task: [0.010s CPU, 0.004s wall-clock]
+151 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+12 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.002s wall-clock]
+Reordering and filtering variables...
+23 of 23 variables necessary.
+16 of 20 mutex groups necessary.
+106 of 106 operators necessary.
+0 of 0 axiom rules necessary.
+Reordering and filtering variables: [0.000s CPU, 0.001s wall-clock]
+Translator variables: 23
+Translator derived variables: 0
+Translator facts: 90
+Translator goal facts: 3
+Translator mutex groups: 16
+Translator total mutex groups size: 68
+Translator operators: 106
+Translator axioms: 0
+Translator task size: 1000
+warning: could not determine peak memory
+Writing output... [0.000s CPU, 0.001s wall-clock]
+Done! [0.030s CPU, 0.031s wall-clock]
+
+translate exit code: 0
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /Users/derejeyitagesu/Downloads/Dawit_honours_project/rl-plan-honours/fast-downward/builds/release/bin/downward --search 'rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=true),rl_control_interval=0,rl_client_port=14841)' --internal-plan-file sas_plan < output.sas
+reading input... [t=0.000294185s]
+done reading input! [t=0.0037933s]
+Simplifying 438 unary operators... done! [438 unary operators]
+time to simplify: 0.000268031s
+Initializing additive heuristic...
+Initializing FF heuristic...
+Initializing heuristic cache... building causal graph...done! [t=0.000210265s]
+done!
+Initializing causal graph heuristic...
+Initializing context-enhanced additive heuristic...
+Simplifying 438 unary operators... done! [438 unary operators]
+time to simplify: 0.000264853s
+Initializing additive heuristic...
+Building successor generator...done! [t=0.00748823s]
+peak memory difference for successor generator creation: 0 KB
+time for successor generation creation: 6.7658e-05s
+Variables: 23
+FactPairs: 90
+Bytes per state: 8
+Open-List 0: Best-First-Open-List + ff
+Open-List 1: Best-First-Open-List + cg
+Open-List 2: Best-First-Open-List + cea
+Open-List 3: Best-First-Open-List + add
+Conducting best first search without reopening closed nodes, (real) bound = 2147483647
+New best heuristic value for add: 6
+New best heuristic value for cg: 3
+New best heuristic value for cea: 9
+New best heuristic value for ff: 4
+[g=0, 1 evaluated, 0 expanded, t=0.0078757s, 34126904 KB]
+Initial heuristic value for add: 6
+Initial heuristic value for cg: 3
+Initial heuristic value for cea: 9
+Initial heuristic value for ff: 4
+pruning method: none
+Setup connection to RL Agent!
+
+Port: 14841
+Connection created!
+New best heuristic value for cea: 8
+[g=1, 8 evaluated, 6 expanded, t=0.0143297s, 34154552 KB]
+New best heuristic value for cea: 6
+[g=2, 24 evaluated, 17 expanded, t=0.0276841s, 34154552 KB]
+New best heuristic value for add: 4
+New best heuristic value for cea: 4
+[g=3, 51 evaluated, 34 expanded, t=0.0454791s, 34154552 KB]
+New best heuristic value for add: 3
+New best heuristic value for cea: 3
+New best heuristic value for ff: 3
+[g=4, 53 evaluated, 35 expanded, t=0.0464164s, 34154552 KB]
+New best heuristic value for add: 2
+New best heuristic value for cg: 2
+New best heuristic value for cea: 2
+New best heuristic value for ff: 2
+[g=5, 65 evaluated, 41 expanded, t=0.0531602s, 34154552 KB]
+New best heuristic value for cg: 1
+[g=6, 79 evaluated, 54 expanded, t=0.0643316s, 34154552 KB]
+New best heuristic value for add: 1
+New best heuristic value for cea: 1
+New best heuristic value for ff: 1
+[g=8, 99 evaluated, 72 expanded, t=0.0804752s, 34154552 KB]
+New best heuristic value for add: 0
+New best heuristic value for cg: 0
+New best heuristic value for cea: 0
+New best heuristic value for ff: 0
+[g=9, 107 evaluated, 77 expanded, t=0.0858311s, 34154552 KB]
+Solution found!
+Actual search time: 0.0786117s [t=0.0867526s]
+move player-01 pos-5-4 pos-5-5 dir-down (0)
+move player-01 pos-5-5 pos-4-5 dir-left (0)
+move player-01 pos-4-5 pos-3-5 dir-left (0)
+push-to-nongoal player-01 stone-02 pos-3-5 pos-3-4 pos-3-3 dir-up (1)
+push-to-nongoal player-01 stone-03 pos-3-4 pos-4-4 pos-5-4 dir-right (1)
+move player-01 pos-4-4 pos-4-3 dir-up (0)
+move player-01 pos-4-3 pos-4-2 dir-up (0)
+move player-01 pos-4-2 pos-3-2 dir-left (0)
+push-to-nongoal player-01 stone-02 pos-3-2 pos-3-3 pos-3-4 dir-down (1)
+push-to-goal player-01 stone-02 pos-3-3 pos-3-4 pos-3-5 dir-down (1)
+move player-01 pos-3-4 pos-3-3 dir-up (0)
+move player-01 pos-3-3 pos-2-3 dir-left (0)
+push-to-goal player-01 stone-01 pos-2-3 pos-2-4 pos-2-5 dir-down (1)
+move player-01 pos-2-4 pos-3-4 dir-right (0)
+move player-01 pos-3-4 pos-4-4 dir-right (0)
+move player-01 pos-4-4 pos-4-5 dir-down (0)
+move player-01 pos-4-5 pos-5-5 dir-right (0)
+move player-01 pos-5-5 pos-6-5 dir-right (0)
+move player-01 pos-6-5 pos-6-4 dir-up (0)
+push-to-nongoal player-01 stone-03 pos-6-4 pos-5-4 pos-4-4 dir-left (1)
+push-to-nongoal player-01 stone-03 pos-5-4 pos-4-4 pos-3-4 dir-left (1)
+move player-01 pos-4-4 pos-4-3 dir-up (0)
+move player-01 pos-4-3 pos-3-3 dir-left (0)
+move player-01 pos-3-3 pos-2-3 dir-left (0)
+move player-01 pos-2-3 pos-2-4 dir-down (0)
+push-to-nongoal player-01 stone-03 pos-2-4 pos-3-4 pos-4-4 dir-right (1)
+move player-01 pos-3-4 pos-3-3 dir-up (0)
+move player-01 pos-3-3 pos-4-3 dir-right (0)
+push-to-goal player-01 stone-03 pos-4-3 pos-4-4 pos-4-5 dir-down (1)
+Plan length: 29 step(s).
+Plan cost: 9
+Expanded 78 state(s).
+Reopened 0 state(s).
+Evaluated 107 state(s).
+Evaluations: 401
+Generated 207 state(s).
+Dead ends: 9 state(s).
+Number of registered states: 107
+Int hash set load factor: 107/128 = 0.835938
+Int hash set resizes: 7
+Search time: 0.0790537s
+Total time: 0.0867615s
+Solution found.
+Peak memory: 34153528 KB
+Remove intermediate file output.sas
+
+search exit code: 0

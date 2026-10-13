@@ -1,0 +1,51 @@
+{
+  "completed": true,
+  "config": {
+    "controller": [
+      "/Users/dawitarega/miniforge3/envs/rl-plan/bin/python",
+      "-u",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/paper-followup-v1/runtime/fixed_policy.py",
+      "--action",
+      "1",
+      "--port",
+      "13244",
+      "--seed",
+      "1"
+    ],
+    "cpu_seconds": 300,
+    "planner": [
+      "/Users/dawitarega/miniforge3/envs/rl-plan/bin/python",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/fast-downward/fast-downward.py",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/visitall/visitall/domain.pddl",
+      "/Users/dawitarega/Downloads/ANU/Honours/rl-plan/experiments/visitall/visitall/test/prob66.pddl",
+      "--search",
+      "rl_eager(rl([single(ff()),single(cg()),single(cea()),single(add())],random_seed=1,handle_empty_list=false),rl_control_interval=0,rl_client_port=13244)"
+    ],
+    "port": 13244,
+    "resident_limit_bytes": 4294967296,
+    "task": {
+      "budget": null,
+      "domain": "visitall",
+      "model": "cg",
+      "phase": "test",
+      "problem": "prob66.pddl",
+      "repeat": 1,
+      "seed": 1
+    },
+    "wall_safeguard": 1800
+  },
+  "controller_exit_code": 0,
+  "cpu_overshoot_seconds": 0,
+  "cpu_seconds": 55.76545003099999,
+  "expanded": 33014,
+  "generated": 131892,
+  "max_case_processes": 3,
+  "peak_sampled_resident_bytes": 169152512,
+  "plan_length": 3263,
+  "planner_exit_code": 0,
+  "snapshot_retries": 0,
+  "status": "solved",
+  "total_wall_seconds": 56.707956842,
+  "waited_child_cpu_after_cleanup": 55.77297,
+  "wall_seconds": 56.700840902
+}
